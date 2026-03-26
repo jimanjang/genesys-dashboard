@@ -1,0 +1,17 @@
+{
+  "name": "genesys-dashboard-server",
+  "version": "1.0.0",
+  "description": "Backend server for Genesys Cloud Call Center Queue Dashboard",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.0",
+    "express": "^4.21.0",
+    "ws": "^8.17.0"
+  }
+}

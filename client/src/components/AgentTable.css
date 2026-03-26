@@ -1,0 +1,190 @@
+/* ─── Agent Table ─────────────────────────────────────────── */
+.agent-table-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  animation: fadeIn 0.4s ease-out;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.agent-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.agent-table-title {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.agent-status-badges {
+  display: flex;
+  gap: 8px;
+  padding: 0 24px 16px 24px;
+  border-bottom: 1px solid var(--border-color);
+  flex-wrap: wrap;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.badge.available { background: #E6F4EA; color: var(--status-green); }
+.badge.idle { background: #E8F0FE; color: var(--accent-blue); }
+.badge.interacting { background: #E8F0FE; color: var(--accent-blue); }
+.badge.communicating { background: #E8F0FE; color: var(--accent-blue); }
+
+.agent-table-wrapper {
+  overflow-y: auto;
+  max-height: 600px;
+  flex: 1;
+}
+
+.agent-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.agent-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.agent-table th {
+  padding: 12px 20px;
+  text-align: left;
+  font-size: var(--font-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.agent-table td {
+  padding: 14px 12px;
+  font-size: var(--font-base);
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.15s ease;
+}
+
+.agent-table tr:hover td {
+  background: var(--bg-surface);
+}
+
+.agent-table tr:last-child td {
+  border-bottom: none;
+}
+
+.agent-table tr.busy td {
+  background: var(--status-yellow-bg);
+}
+
+/* Status badge */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: var(--font-sm);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.status-badge .status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-badge.available {
+  background: var(--status-green-bg);
+  color: var(--status-green);
+  border: 1px solid var(--status-green-border);
+}
+.status-badge.available .status-dot {
+  background: var(--status-green);
+}
+
+.status-badge.interacting, .status-badge.communicating {
+  background: var(--status-red-bg, #FEE2E2);
+  color: var(--status-red, #DC2626);
+  border: 1px solid var(--status-red-border, #FECACA);
+}
+.status-badge.interacting .status-dot, .status-badge.communicating .status-dot {
+  background: var(--status-red, #DC2626);
+}
+
+.status-badge.idle {
+  background: #E8F0FE;
+  color: var(--accent-blue, #1a73e8);
+  border: 1px solid #d2e3fc;
+}
+.status-badge.idle .status-dot {
+  background: var(--accent-blue, #1a73e8);
+}
+
+.status-badge.other {
+  background: var(--status-red-bg);
+  color: var(--status-red);
+  border: 1px solid var(--status-red-border);
+}
+.status-badge.other .status-dot {
+  background: var(--status-red);
+}
+
+.status-badge.offline {
+  background: var(--status-gray-bg);
+  color: var(--status-gray);
+  border: 1px solid #E2E8F0;
+}
+.status-badge.offline .status-dot {
+  background: var(--status-gray);
+}
+
+/* Agent name */
+.agent-name {
+  font-weight: 600;
+}
+
+.agent-duration {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+.agent-interaction {
+  font-size: var(--font-sm);
+  color: var(--text-muted);
+}
+
+.agent-interaction.active {
+  color: var(--accent-orange);
+  font-weight: 500;
+}
+
+.no-agents {
+  padding: 40px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: var(--font-base);
+}
+
+/* End of Agent Table styles */

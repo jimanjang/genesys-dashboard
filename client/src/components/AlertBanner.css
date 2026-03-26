@@ -1,0 +1,47 @@
+/* ─── Alert Banner ────────────────────────────────────────── */
+.alert-banner {
+  animation: slideDown 0.4s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.alert-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: var(--status-red-bg);
+  border: 1px solid var(--status-red-border);
+  border-radius: var(--radius-md);
+}
+
+.alert-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.alert-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.alert-message {
+  font-size: var(--font-base);
+  font-weight: 600;
+  color: var(--status-red);
+}
+
+.alert-detail {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+}
+
+.alert-count {
+  font-size: var(--font-2xl);
+  font-weight: 800;
+  color: var(--status-red);
+  font-variant-numeric: tabular-nums;
+}

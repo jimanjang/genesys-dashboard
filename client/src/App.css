@@ -1,0 +1,233 @@
+/* ─── CSS Reset & Custom Properties ───────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* 당근 brand palette — light theme */
+  --bg-primary: #f5f5f5;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #fafafa;
+  --bg-surface: #f9fafb;
+
+  /* Text */
+  --text-primary: #1a1a1a;
+  --text-secondary: #4a5568;
+  --text-muted: #9ca3af;
+
+  /* 당근 accent colors */
+  --accent-orange: #FF6F0F;
+  --accent-orange-light: #FFF3E8;
+  --accent-orange-dark: #E5600D;
+  --accent-green: #2DB400;
+  --accent-blue: #3182CE;
+  --accent-purple: #805AD5;
+
+  /* Status colors */
+  --status-green: #2DB400;
+  --status-green-bg: #F0FFF0;
+  --status-green-border: #C6F6D5;
+
+  --status-yellow: #F6AD55;
+  --status-yellow-bg: #FFFAF0;
+  --status-yellow-border: #FEEBC8;
+
+  --status-red: #E53E3E;
+  --status-red-bg: #FFF5F5;
+  --status-red-border: #FED7D7;
+
+  --status-gray: #A0AEC0;
+  --status-gray-bg: #F7FAFC;
+
+  /* Borders */
+  --border-color: #E2E8F0;
+  --border-hover: #CBD5E0;
+
+  /* Sizing */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+
+  /* Fonts */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Font sizes — large for TV/wall display */
+  --font-xs: 0.75rem;
+  --font-sm: 0.875rem;
+  --font-base: 1rem;
+  --font-lg: 1.125rem;
+  --font-xl: 1.25rem;
+  --font-2xl: 1.5rem;
+  --font-3xl: 2rem;
+  --font-4xl: 2.5rem;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-family);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Dashboard Layout ────────────────────────────────────── */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 24px 32px;
+  gap: 20px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.dashboard-content {
+  display: grid;
+  grid-template-columns: 3.5fr 1fr; /* 3:1 ratio for KPI vs Agent Table, slightly biased to KPI */
+  gap: 24px;
+  flex: 1;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto; /* Two rows */
+  gap: 20px;
+}
+
+.agent-section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+
+/* ─── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E0;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ─── Animations ──────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes pulseRed {
+  0%, 100% {
+    box-shadow: var(--shadow-card);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(229, 62, 62, 0.15), var(--shadow-card);
+  }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ─── Loading Skeleton ────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #EDF2F7 25%,
+    #E2E8F0 50%,
+    #EDF2F7 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+/* ─── Connection indicator ────────────────────────────────── */
+.connection-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.connection-dot.connected {
+  background: var(--status-green);
+  box-shadow: 0 0 6px var(--status-green);
+}
+
+.connection-dot.disconnected {
+  background: var(--status-red);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ─── Responsive ──────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .dashboard-content {
+    grid-template-columns: 1fr;
+  }
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 2000px) {
+  html {
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 3000px) {
+  html {
+    font-size: 26px;
+  }
+}

@@ -1,0 +1,53 @@
+.queue-status-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+}
+
+.queue-status-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.queue-status-title {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.queue-status-subtitle {
+  font-size: var(--font-xs);
+  color: var(--text-muted);
+}
+
+.queue-status-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.queue-status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.queue-status-name {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  text-decoration: underline;
+  text-decoration-color: var(--border-color);
+  text-underline-offset: 4px;
+}
+
+.queue-status-value {
+  font-size: var(--font-base);
+  font-weight: 600;
+  color: var(--accent-blue);
+}
