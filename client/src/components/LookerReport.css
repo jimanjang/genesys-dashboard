@@ -1,0 +1,13 @@
+.looker-report-container {
+  width: 100%;
+  height: calc(100vh - 160px); /* Adjust based on header and nav height */
+  background: var(--bg-secondary, #1a1a1a);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  margin-top: 10px;
+}
+
+.looker-report-container iframe {
+  display: block;
+}
