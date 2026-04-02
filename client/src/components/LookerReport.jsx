@@ -6,7 +6,7 @@ export default function LookerReport() {
       <iframe 
         width="100%" 
         height="100%" 
-        src="https://lookerstudio.google.com/embed/reporting/2eadfa4e-6c81-495e-b907-0ffbcd6af400/page/Q6LrF" 
+        src="https://lookerstudio.google.com/embed/reporting/a38ef374-136b-4dbd-9984-42a09f97143e/page/p_2bvhsenw1d" 
         frameBorder="0" 
         style={{ border: 0 }} 
         allowFullScreen 

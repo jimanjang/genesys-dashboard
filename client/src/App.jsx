@@ -36,6 +36,14 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
+  // Auto-transition every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setView((prev) => (prev === 'dashboard' ? 'analysis' : 'dashboard'));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   // Calculate totals for new KPI cards based on strict widget constraints
   const kpiQueues = queues.filter(q => 
     q.name === "당근 비즈니스센터_광고 노출/성과" || 
@@ -50,50 +58,45 @@ export default function App() {
   const answerRate = totalOffered > 0 ? ((totalAnswered / totalOffered) * 100).toFixed(1) + '%' : '-';
 
   return (
-    <div className="dashboard" id="dashboard-root">
-      <Header lastUpdated={updateTime} isConnected={isConnected} title="광고_사업팀 운영 대시보드" />
+    <div className="dashboard-container">
+      <Header 
+        lastUpdated={updateTime} 
+        isConnected={isConnected} 
+        title=""
+        currentView={view}
+        onViewChange={setView}
+      />
 
-      <nav className="dashboard-nav">
-        <button 
-          className={`nav-tab ${view === 'dashboard' ? 'active' : ''}`}
-          onClick={() => setView('dashboard')}
-        >
-          실시간 모니터링
-        </button>
-        <button 
-          className={`nav-tab ${view === 'analysis' ? 'active' : ''}`}
-          onClick={() => setView('analysis')}
-        >
-          데이터 분석 (Looker Studio)
-        </button>
-      </nav>
+      <div className="view-viewport">
+        <div className={`view-slider ${view === 'analysis' ? 'slide-left' : ''}`}>
+          <div className="view-page" id="dashboard-view">
+            <AlertBanner alerts={alerts} />
+            <div className="dashboard-content">
+              <div className="kpi-grid">
+                <KpiCard title="응답률" subtitle="오늘" value={answerRate} />
+                <KpiCard title="대기호" value={totalWaiting} valueClass="blue" />
+                <KpiCard title="포기호" subtitle="오늘" value={totalAbandoned || '-'} />
+                
+                <DualKpiCard 
+                  title="응답/인입호 오늘"
+                  label1="응답" value1={totalAnswered || '-'}
+                  label2="인입" value2={totalOffered || '-'}
+                />
+                <QueueStatusCard queues={queues} interactingOnly={true} />
+                <QueueStatusCard queues={queues} interactingOnly={false} />
+              </div>
 
-      {view === 'dashboard' ? (
-        <>
-          <AlertBanner alerts={alerts} />
-          <div className="dashboard-content">
-            <div className="kpi-grid">
-              <KpiCard title="응답률" subtitle="오늘" value={answerRate} />
-              <KpiCard title="대기호" value={totalWaiting} valueClass="blue" />
-              <KpiCard title="포기호" subtitle="오늘" value={totalAbandoned || '-'} />
-              
-              <DualKpiCard 
-                title="응답/인입호 오늘"
-                label1="응답" value1={totalAnswered || '-'}
-                label2="인입" value2={totalOffered || '-'}
-              />
-              <QueueStatusCard queues={queues} interactingOnly={true} />
-              <QueueStatusCard queues={queues} interactingOnly={false} />
-            </div>
-
-            <div className="agent-section">
-              <AgentTable agents={agents} />
+              <div className="agent-section">
+                <AgentTable agents={agents} />
+              </div>
             </div>
           </div>
-        </>
-      ) : (
-        <LookerReport />
-      )}
+
+          <div className="view-page" id="analysis-view">
+            <LookerReport />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

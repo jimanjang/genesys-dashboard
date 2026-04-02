@@ -1,6 +1,29 @@
+import { useState, useRef, useEffect } from 'react';
 import './Header.css';
 
-export default function Header({ lastUpdated, isConnected, title }) {
+export default function Header({ lastUpdated, isConnected, title, currentView, onViewChange }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
+  const handleMenuClick = (view) => {
+    onViewChange(view);
+    setIsMenuOpen(false);
+  };
   const formatTime = (date) => {
     if (!date) return '--:--:--';
     return date.toLocaleTimeString('ko-KR', {
@@ -22,7 +45,47 @@ export default function Header({ lastUpdated, isConnected, title }) {
   return (
     <header className="header" id="dashboard-header">
       <div className="header-left">
-        <button className="back-btn" aria-label="Go back">&lt;</button>
+        <div className="hamburger-container" ref={menuRef}>
+          <button 
+            className={`hamburger-btn ${isMenuOpen ? 'open' : ''}`} 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Menu"
+            aria-expanded={isMenuOpen}
+          >
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line"></span>
+          </button>
+          
+          {isMenuOpen && (
+            <nav className="nav-menu">
+              <div className="nav-menu-header">대시보드 메뉴</div>
+              <ul className="nav-menu-list">
+                <li 
+                  className={`nav-menu-item ${currentView === 'dashboard' ? 'active' : ''}`}
+                  onClick={() => handleMenuClick('dashboard')}
+                >
+                  <span className="nav-icon">📊</span>
+                  <div className="nav-text">
+                    <span className="nav-label">실시간 모니터링</span>
+                    <span className="nav-sub">운영 지표 실시간 확인</span>
+                  </div>
+                </li>
+                <li 
+                  className={`nav-menu-item ${currentView === 'analysis' ? 'active' : ''}`}
+                  onClick={() => handleMenuClick('analysis')}
+                >
+                  <span className="nav-icon">📈</span>
+                  <div className="nav-text">
+                    <span className="nav-label">데이터 분석</span>
+                    <span className="nav-sub">Looker Studio 리포트</span>
+                  </div>
+                </li>
+              </ul>
+            </nav>
+          )}
+        </div>
+        
         <img 
           src="/karrot-logo.png" 
           alt="당근 서비스 워크" 
