@@ -64,6 +64,25 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// ─── Mock CSAT Trigger (Test) ───────────────────────────────
+app.post('/api/test/csat-trigger', (req, res) => {
+  const { agentName, score, comment } = req.body;
+  const mockAlert = {
+    type: 'csat_alert',
+    data: {
+      agentName: agentName || '김당근',
+      score: score || 5,
+      comment: comment || '정말 친절하게 상담해주셔서 감사합니다! 짱이에요!',
+      timestamp: new Date().toISOString(),
+    },
+  };
+
+  broadcastToClients(mockAlert, true); // true to indicate it's a special alert type
+
+  console.log(`[Test] Broadcasted CSAT alert for ${mockAlert.data.agentName}`);
+  res.json({ status: 'ok', message: 'CSAT alert broadcasted' });
+});
+
 // ─── WebSocket Server ───────────────────────────────────────
 const wss = new WebSocketServer({ server, path: '/ws' });
 
@@ -89,11 +108,13 @@ wss.on('connection', (ws) => {
   });
 });
 
-function broadcastToClients(data) {
-  const message = JSON.stringify({
-    type: 'update',
-    data: { ...data, alertThreshold: ALERT_THRESHOLD },
-  });
+function broadcastToClients(data, isSpecialType = false) {
+  const message = isSpecialType 
+    ? JSON.stringify(data)
+    : JSON.stringify({
+        type: 'update',
+        data: { ...data, alertThreshold: ALERT_THRESHOLD },
+      });
 
   wss.clients.forEach((client) => {
     if (client.readyState === 1) {

@@ -7,6 +7,7 @@ export default function useWebSocket(url) {
   const [data, setData] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(null);
+  const [csatAlert, setCsatAlert] = useState(null);
 
   const connect = useCallback(() => {
     // Build WebSocket URL
@@ -37,6 +38,8 @@ export default function useWebSocket(url) {
         if (message.type === 'update' && message.data) {
           setData(message.data);
           setLastUpdated(new Date());
+        } else if (message.type === 'csat_alert') {
+          setCsatAlert({ ...message.data, id: Date.now() });
         }
       } catch (err) {
         console.error('[WS] Failed to parse message:', err);
@@ -105,5 +108,5 @@ export default function useWebSocket(url) {
     return () => clearInterval(interval);
   }, [isConnected]);
 
-  return { data, isConnected, lastUpdated };
+  return { data, isConnected, lastUpdated, csatAlert };
 }

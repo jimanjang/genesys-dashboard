@@ -7,15 +7,20 @@ import QueueStatusCard from './components/QueueStatusCard';
 import AgentTable from './components/AgentTable';
 import AlertBanner from './components/AlertBanner';
 import LookerReport from './components/LookerReport';
+import CSATToast from './components/CSATToast';
 
 export default function App() {
-  const { data, isConnected, lastUpdated } = useWebSocket();
+  const { data, isConnected, lastUpdated, csatAlert } = useWebSocket();
   const [queues, setQueues] = useState([]);
   const [agents, setAgents] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [alertThreshold, setAlertThreshold] = useState(5);
   const [updateTime, setUpdateTime] = useState(null);
   const [view, setView] = useState('dashboard'); // 'dashboard' | 'analysis'
+  
+  // CSAT Toast Queue
+  const [csatQueue, setCsatQueue] = useState([]);
+  const [currentCsat, setCurrentCsat] = useState(null);
 
   useEffect(() => {
     if (data) {
@@ -28,6 +33,22 @@ export default function App() {
       setUpdateTime(lastUpdated);
     }
   }, [data, lastUpdated]);
+
+  // Add CSAT alerts to queue
+  useEffect(() => {
+    if (csatAlert) {
+      setCsatQueue((prev) => [...prev, csatAlert]);
+    }
+  }, [csatAlert]);
+
+  // Process queue
+  useEffect(() => {
+    if (csatQueue.length > 0 && !currentCsat) {
+      const next = csatQueue[0];
+      setCurrentCsat(next);
+      setCsatQueue((prev) => prev.slice(1));
+    }
+  }, [csatQueue, currentCsat]);
 
   // Force re-render every second to update relative timestamps
   const [, setTick] = useState(0);
@@ -97,6 +118,11 @@ export default function App() {
           </div>
         </div>
       </div>
+
+      <CSATToast 
+        alert={currentCsat} 
+        onDismiss={() => setCurrentCsat(null)} 
+      />
     </div>
   );
 }
