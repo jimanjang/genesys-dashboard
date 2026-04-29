@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+@font-face {
+  font-family: 'Karrot Sans';
+  src: url('/KarrotSans/KarrotSans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Karrot Sans';
+  src: url('/KarrotSans/KarrotSans-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Karrot Sans';
+  src: url('/KarrotSans/KarrotSans-Heavy.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ── Daangn Modern Light Theme ── */
+  --color-bg: #f8f9fa; /* Clean off-white */
+  --color-surface: #ffffff;
+  --color-surface-2: #f1f3f5;
+  --color-surface-3: #e9ecef;
+  --color-border: #dee2e6;
+  --color-border-light: #f1f3f5;
+  --color-text: #212529;
+  --color-text-muted: #868e96;
+  --color-text-sub: #495057;
+
+  /* Daangn brand */
+  --color-daangn: #ff7f29;
+  --color-daangn-light: #fff0e6;
+  --color-daangn-dark: #e06010;
+
+  /* Semantic */
+  --color-green: #12a150;
+  --color-green-light: #e6f7ee;
+  --color-red: #e03030;
+  --color-red-light: #fff0f0;
+  --color-yellow: #d48000;
+  --color-yellow-light: #fff8e6;
+  --color-blue: #2070d0;
+  --color-blue-light: #e8f0fc;
+
+  /* Layout */
+  --header-h: 108px;
+  --main-h: 756px;
+  --banner-h: 216px;
+
+  /* Shadows */
+  --shadow-sm: 0 4px 16px rgba(0,0,0,0.04), 0 1px 4px rgba(0,0,0,0.02);
+  --shadow-md: 0 12px 32px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.03);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Karrot Sans', 'Noto Sans KR', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#dashboard-root {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Status text colors ───────────────────────────── */
+.status-available   { color: var(--color-green); }
+.status-idle        { color: var(--color-blue); }
+.status-interacting { color: var(--color-daangn-dark); }
+.status-communicating { color: var(--color-daangn-dark); }
+.status-meal        { color: var(--color-yellow); }
+.status-break       { color: var(--color-yellow); }
+.status-meeting     { color: var(--color-blue); }
+.status-training    { color: var(--color-blue); }
+.status-busy        { color: var(--color-text-sub); }
+.status-away        { color: var(--color-text-sub); }
+.status-other       { color: var(--color-text-muted); }
+.status-offline     { color: #c0c0bc; }
+
+/* ── Metric Cards ────────────────────────────────── */
+.metric-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.metric-card-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.metric-card-value {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.metric-card-sub {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+/* ── Agent Table ─────────────────────────────────── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.data-table th {
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+  font-weight: 600;
+  text-align: left;
+  padding: 9px 14px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.data-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--color-border-light);
+  vertical-align: middle;
+  color: var(--color-text);
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--color-surface-2); }
+
+/* ── Status Badges ──────────────────────────────── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-available    { background: var(--color-green); }
+.dot-idle         { background: var(--color-blue); }
+.dot-interacting  { background: var(--color-daangn); }
+.dot-communicating{ background: var(--color-daangn); }
+.dot-meal         { background: var(--color-yellow); }
+.dot-break        { background: var(--color-yellow); }
+.dot-meeting      { background: var(--color-blue); }
+.dot-training     { background: var(--color-blue); }
+.dot-busy         { background: var(--color-text-sub); }
+.dot-away         { background: var(--color-text-sub); }
+.dot-other        { background: var(--color-text-muted); }
+.dot-offline      { background: #d0d0cc; }
+
+/* ── Scrollable area ────────────────────────────── */
+.scroll-area {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+.scroll-area::-webkit-scrollbar { width: 4px; }
+.scroll-area::-webkit-scrollbar-track { background: transparent; }
+.scroll-area::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+

@@ -29,6 +29,9 @@ logs/
 .DS_Store
 Thumbs.db
 
+# Secrets
+backend/service-account.json
+
 # Antigravity specific
 .antigravity/
 .gemini/
