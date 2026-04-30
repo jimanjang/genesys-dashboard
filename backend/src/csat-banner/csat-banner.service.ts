@@ -28,11 +28,25 @@ export class CsatBannerService implements OnModuleInit {
     private events: EventsGateway,
   ) {
     const credPath = this.config.get('GOOGLE_APPLICATION_CREDENTIALS') || './service-account.json';
-    this.bigquery = new BigQuery({ keyFilename: credPath });
-    this.sheetsAuth = new google.auth.GoogleAuth({
-      keyFile: credPath,
-      scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
-    });
+    try {
+      const credentials = JSON.parse(require('fs').readFileSync(credPath, 'utf8'));
+      this.bigquery = new BigQuery({ 
+        projectId: credentials.project_id || 'data-proj-470202',
+        keyFilename: credPath 
+      });
+      this.sheetsAuth = new google.auth.GoogleAuth({
+        credentials,
+        scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
+      });
+    } catch (e) {
+      this.logger.error(`Failed to load credentials: ${e.message}`);
+      // Fallback
+      this.bigquery = new BigQuery({ keyFilename: credPath });
+      this.sheetsAuth = new google.auth.GoogleAuth({
+        keyFile: credPath,
+        scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
+      });
+    }
   }
 
   async onModuleInit() {
@@ -105,34 +119,33 @@ export class CsatBannerService implements OnModuleInit {
       const projectId = this.config.get('BIGQUERY_PROJECT_ID') || 'data-proj-470202';
       const datasetId = this.config.get('BIGQUERY_DATASET_ID') || 'ds_growth_culture';
 
-      // csat_raw_staging: rate=5, comment non-null, today's records
+      // vw_high_csat_details: first_name, rate, created_at_kst
       const query = `
-        SELECT admin_nickname, comment, DATE(created_at_kst) as date
-        FROM \`${projectId}.${datasetId}.csat_raw_staging\`
+        SELECT first_name, rate, created_at_kst
+        FROM \`${projectId}.${datasetId}.vw_high_csat_details\`
         WHERE rate = 5
-          AND admin_nickname IS NOT NULL
-          AND comment IS NOT NULL
-          AND DATE(created_at_kst) = CURRENT_DATE('Asia/Seoul')
+          AND first_name IS NOT NULL
+          AND DATE(created_at_kst) >= DATE_SUB(CURRENT_DATE('Asia/Seoul'), INTERVAL 3 DAY)
         ORDER BY created_at_kst DESC
         LIMIT 50
       `;
 
       const [rows] = await this.bigquery.query({ query, location: 'US' });
 
-      this.bigQueryMessages = rows
-        .filter((row: any) => row.admin_nickname)
-        .map((row: any) => {
-          const name = row.admin_nickname;
-          const comment = (row.comment || '').trim().replace(/\n/g, ' ').substring(0, 80);
-          return {
-            type: 'five_star' as const,
-            agentName: name,
-            text: comment
-              ? `${name}에게 도착한 별점 5점과 따뜻한 한마디: "${comment}" 🌟`
-              : `${name}, 별점 5점 만점! 오늘도 멋지게 해냈네요! 🎉`,
-            priority: 2 as const,
-          };
+      this.bigQueryMessages = rows.map((row: any) => {
+        const name = row.first_name;
+        const timeStr = new Date(row.created_at_kst).toLocaleTimeString('ko-KR', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
         });
+        return {
+          type: 'five_star' as const,
+          agentName: name,
+          text: `${name}님 / 별점 ${row.rate}점 / ${timeStr} ✨`,
+          priority: 2 as const,
+        };
+      });
 
       this.logger.log(`[BigQuery] Refreshed ${this.bigQueryMessages.length} 5-star records`);
       this.buildQueue();
