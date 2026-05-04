@@ -163,17 +163,26 @@ export default function Header({ connected }: { connected?: boolean }) {
 }
 
 function Clock() {
-  const [now, setNow] = useState(new Date());
+  const [mounted, setMounted] = useState(false);
+  const [now, setNow] = useState<Date | null>(null);
+
   useEffect(() => {
+    setNow(new Date());
+    setMounted(true);
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
+
+  if (!mounted || !now) {
+    // Return empty placeholder with same min-width to prevent layout shift
+    return <div style={{ textAlign: 'right', minWidth: '6vw' }} />;
+  }
 
   const timeStr = now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
   const dateStr = now.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' });
 
   return (
-    <div style={{ textAlign: 'right' }}>
+    <div style={{ textAlign: 'right', minWidth: '6vw' }}>
       <div style={{ fontSize: '1.15vw', fontWeight: 800, fontVariantNumeric: 'tabular-nums', color: '#1a1a1a', letterSpacing: '-0.02em' }}>
         {timeStr}
       </div>

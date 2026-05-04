@@ -14,8 +14,8 @@ export class CsatBannerService implements OnModuleInit {
   private messageQueue: BannerMessage[] = [];
   private currentIndex = 0;
 
-  // Track last processed Sheets row to detect new entries
-  private lastSheetRowIndex = -1;
+  // Sheets data refreshed every 30s
+  private sheetMessages: BannerMessage[] = [];
 
   // BigQuery data refreshed hourly
   private bigQueryMessages: BannerMessage[] = [];
@@ -66,25 +66,25 @@ export class CsatBannerService implements OnModuleInit {
       const sheets = google.sheets({ version: 'v4', auth: this.sheetsAuth });
 
       // Actual tab: '배달된 우수 코멘트 적재'
-      // Columns: A=csat_inquiry_id, B=inquiry_type, C=admin_nickname, D=url, E=comment
       const response = await sheets.spreadsheets.values.get({
         spreadsheetId: sheetId,
         range: "'배달된 우수 코멘트 적재'!A:E",
       });
 
       const rows = response.data.values || [];
-      if (rows.length <= 1) return; // header only
+      if (rows.length <= 1) {
+        if (this.sheetMessages.length > 0) {
+          this.sheetMessages = [];
+          this.buildQueue();
+        }
+        return;
+      }
 
       const dataRows = rows.slice(1); // skip header
-      const newRows = dataRows.slice(this.lastSheetRowIndex + 1);
+      // Take the last 100 rows (approx 1 week worth) and reverse to show newest first
+      const recentRows = dataRows.slice(-100).reverse();
 
-      if (newRows.length === 0) return;
-
-      this.logger.log(`[Sheets] Found ${newRows.length} new comment rows`);
-      this.lastSheetRowIndex = dataRows.length - 1;
-
-      const newMessages: BannerMessage[] = newRows
-        .reverse() // newest last → newest first
+      const newMessages: BannerMessage[] = recentRows
         .filter((row: string[]) => row[4] && row[4].trim()) // col E = comment
         .map((row: string[]) => {
           const agentName = row[2] || '상담원'; // col C = admin_nickname
@@ -100,13 +100,13 @@ export class CsatBannerService implements OnModuleInit {
 
       if (newMessages.length === 0) return;
 
-      // Prepend new Sheets messages to the front of the queue
-      this.messageQueue = [
-        ...newMessages,
-        ...this.messageQueue.filter((m) => m.priority !== 1),
-      ];
-      this.currentIndex = 0;
-      this.logger.log(`[Sheets] Added ${newMessages.length} new messages to queue`);
+      // Only rebuild queue if the sheet data has actually changed
+      const isChanged = JSON.stringify(this.sheetMessages) !== JSON.stringify(newMessages);
+      if (isChanged) {
+        this.sheetMessages = newMessages;
+        this.buildQueue();
+        this.logger.log(`[Sheets] Updated ${newMessages.length} messages for the rolling cycle`);
+      }
     } catch (err: any) {
       this.logger.warn(`[Sheets] Fetch failed: ${err.message}`);
     }
@@ -125,7 +125,7 @@ export class CsatBannerService implements OnModuleInit {
         FROM \`${projectId}.${datasetId}.vw_high_csat_details\`
         WHERE rate = 5
           AND first_name IS NOT NULL
-          AND DATE(created_at_kst) >= DATE_SUB(CURRENT_DATE('Asia/Seoul'), INTERVAL 3 DAY)
+          AND DATE(created_at_kst) >= DATE_TRUNC(CURRENT_DATE('Asia/Seoul'), ISOWEEK)
         ORDER BY created_at_kst DESC
         LIMIT 50
       `;
@@ -156,13 +156,11 @@ export class CsatBannerService implements OnModuleInit {
 
   // ── Build unified priority queue ────────────────────────────
   buildQueue() {
-    const sheetMessages = this.messageQueue.filter((m) => m.priority === 1);
     const cheerMessages: BannerMessage[] = [...CHEER_MESSAGES];
 
     // Priority 1 first, then BigQuery P2, then cheer P3
-    // Interleave P2 and P3 if P1 is empty
     const combined: BannerMessage[] = [
-      ...sheetMessages,
+      ...this.sheetMessages,
       ...this.bigQueryMessages,
       ...cheerMessages,
     ];

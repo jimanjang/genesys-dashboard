@@ -88,7 +88,7 @@ export default function RollingBanner() {
         }}>
           {(() => {
             if (isDefaultText) {
-              return <><strong style={{ fontWeight: 800 }}>당근 서비스</strong>는 여러분의 따뜻한 상담을 응원합니다. 항상 감사합니다!</>;
+              return <>오늘도 우리 팀의 친절한 응대 덕분에 서비스가 빛나고 있어요! ✨</>;
             }
             const match = displayText.match(/^(.*?)에게 도착한 (.*)$/);
             if (match) {
