@@ -75,7 +75,7 @@ export default function BizOpsDashboard() {
         {/* Slide 0: Native Genesys Layout */}
         <div style={{
           position: 'absolute',
-          top: '1.25vw', left: '1.67vw', right: '1.67vw', bottom: '1.25vw',
+          top: '0.4vw', left: '1.67vw', right: '1.67vw', bottom: '0.4vw',
           display: 'grid',
           gridTemplateColumns: '1.1fr 1.1fr 19%',
           gap: '1.25vw',
@@ -99,47 +99,71 @@ export default function BizOpsDashboard() {
         {/* Slide 1: Looker Studio (사업심사-비즈) */}
         <div style={{
           position: 'absolute',
-          top: '1.25vw', left: '1.67vw', right: '1.67vw', bottom: '1.25vw',
-          backgroundColor: '#ffffff',
-          borderRadius: '1.2vw',
-          boxShadow: 'var(--shadow-sm)',
-          overflow: 'hidden',
+          top: '0.4vw', left: '1.67vw', right: '1.67vw', bottom: '0.4vw',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
           opacity: currentIndex === 1 ? 1 : 0,
           pointerEvents: currentIndex === 1 ? 'auto' : 'none',
           transition: 'opacity 0.8s ease-in-out',
           zIndex: currentIndex === 1 ? 2 : 1,
         }}>
-          <iframe
-            src="https://datastudio.google.com/embed/reporting/a38ef374-136b-4dbd-9984-42a09f97143e/page/p_qmanjlnr2d?displayMode=RESIZE_TO_FIT"
-            scrolling="no"
-            style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
-            title="사업심사-비즈"
-            allowFullScreen
-            sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
-          />
+          <div style={{
+            position: 'relative',
+            width: '100%',
+            height: '100%',
+            maxWidth: '100%',
+            maxHeight: '100%',
+            aspectRatio: '16 / 9',
+            backgroundColor: '#ffffff',
+            borderRadius: '1.2vw',
+            boxShadow: 'var(--shadow-sm)',
+            overflow: 'hidden',
+          }}>
+            <iframe
+              src="https://datastudio.google.com/embed/reporting/a38ef374-136b-4dbd-9984-42a09f97143e/page/p_qmanjlnr2d?displayMode=RESIZE_TO_FIT"
+              scrolling="no"
+              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none', display: 'block' }}
+              title="사업심사-비즈"
+              allowFullScreen
+              sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+            />
+          </div>
         </div>
 
         {/* Slide 2: Looker Studio (사업심사-광고) */}
         <div style={{
           position: 'absolute',
-          top: '1.25vw', left: '1.67vw', right: '1.67vw', bottom: '1.25vw',
-          backgroundColor: '#ffffff',
-          borderRadius: '1.2vw',
-          boxShadow: 'var(--shadow-sm)',
-          overflow: 'hidden',
+          top: '0.4vw', left: '1.67vw', right: '1.67vw', bottom: '0.4vw',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
           opacity: currentIndex === 2 ? 1 : 0,
           pointerEvents: currentIndex === 2 ? 'auto' : 'none',
           transition: 'opacity 0.8s ease-in-out',
           zIndex: currentIndex === 2 ? 2 : 1,
         }}>
-          <iframe
-            src="https://datastudio.google.com/embed/reporting/a38ef374-136b-4dbd-9984-42a09f97143e/page/p_doihjtht2d?displayMode=RESIZE_TO_FIT"
-            scrolling="no"
-            style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
-            title="사업심사-광고"
-            allowFullScreen
-            sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
-          />
+          <div style={{
+            position: 'relative',
+            width: '100%',
+            height: '100%',
+            maxWidth: '100%',
+            maxHeight: '100%',
+            aspectRatio: '16 / 9',
+            backgroundColor: '#ffffff',
+            borderRadius: '1.2vw',
+            boxShadow: 'var(--shadow-sm)',
+            overflow: 'hidden',
+          }}>
+            <iframe
+              src="https://datastudio.google.com/embed/reporting/a38ef374-136b-4dbd-9984-42a09f97143e/page/p_doihjtht2d?displayMode=RESIZE_TO_FIT"
+              scrolling="no"
+              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none', display: 'block' }}
+              title="사업심사-광고"
+              allowFullScreen
+              sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+            />
+          </div>
         </div>
       </main>
 

@@ -39,12 +39,23 @@ export default function LookerPlaceholder({ teamName, iframeSrc, slideTitles }: 
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: '#ffffff',
-          borderRadius: '24px',
-          boxShadow: 'var(--shadow-md)',
-          overflow: 'hidden',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}>
-          {sources.map((src, idx) => (
+          <div style={{
+            position: 'relative',
+            width: '100%',
+            height: '100%',
+            maxWidth: '100%',
+            maxHeight: '100%',
+            aspectRatio: '16 / 9',
+            backgroundColor: '#ffffff',
+            borderRadius: '24px',
+            boxShadow: 'var(--shadow-md)',
+            overflow: 'hidden',
+          }}>
+            {sources.map((src, idx) => (
             <iframe
               key={src}
               src={`${src}${src.includes('?') ? '&' : '?'}displayMode=RESIZE_TO_FIT`}
@@ -67,6 +78,7 @@ export default function LookerPlaceholder({ teamName, iframeSrc, slideTitles }: 
               sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
             />
           ))}
+          </div>
         </div>
       </div>
     );

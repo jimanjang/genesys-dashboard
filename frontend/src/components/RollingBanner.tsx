@@ -30,8 +30,8 @@ export default function RollingBanner() {
   return (
     <div style={{
       width: '96.67vw',
-      height: '9.17vw',
-      margin: '0.83vw 1.67vw 1.25vw 1.67vw',
+      height: '7.0vw',
+      margin: '0.4vw 1.67vw 0.8vw 1.67vw',
       borderRadius: '1.25vw',
       boxShadow: 'var(--shadow-md)',
       display: 'flex',
@@ -80,6 +80,11 @@ export default function RollingBanner() {
           color: '#ffffff',
           lineHeight: 1.5,
           letterSpacing: '-0.01em',
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
         }}>
           {(() => {
             if (isDefaultText) {

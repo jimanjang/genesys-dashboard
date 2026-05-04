@@ -10,7 +10,7 @@ function LookerOnlyPage({ teamName, iframeSrc, slideTitles }: { teamName: string
       <main style={{
         flex: 1,
         width: '100%',
-        padding: '1.25vw 1.67vw', // MATCHES PAY TEAM ALIGNMENT
+        padding: '0.4vw 1.67vw', // ADJUSTED FOR MORE LOOKER HEIGHT
         overflow: 'hidden',
         boxSizing: 'border-box',
         minHeight: 0,

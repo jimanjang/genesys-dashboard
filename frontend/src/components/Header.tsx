@@ -33,12 +33,12 @@ export default function Header({ connected }: { connected?: boolean }) {
   return (
     <header style={{
       width: '96.67vw',
-      height: '4.375vw',
+      height: '4.0vw',
       background: '#ffffff',
       borderRadius: '1.25vw',
       display: 'flex',
       alignItems: 'center',
-      margin: '1.25vw 1.67vw 0 1.67vw',
+      margin: '0.8vw 1.67vw 0 1.67vw',
       padding: '0 2.08vw',
       gap: '1.67vw',
       flexShrink: 0,
