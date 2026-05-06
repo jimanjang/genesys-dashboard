@@ -86,16 +86,28 @@ export class CsatBannerService implements OnModuleInit {
 
       const newMessages: BannerMessage[] = recentRows
         .filter((row: string[]) => row[4] && row[4].trim()) // col E = comment
-        .map((row: string[]) => {
+        .flatMap((row: string[]) => {
           const agentName = row[2] || '상담원'; // col C = admin_nickname
-          const comment = (row[4] || '').trim().replace(/\n/g, ' ').substring(0, 100);
-          return {
+          const fullComment = (row[4] || '').trim().replace(/\n/g, ' ');
+
+          // Split long comments into chunks of ~85 chars (approx 2 lines) for separate slots
+          const CHUNK_SIZE = 85;
+          const chunks: string[] = [];
+          for (let i = 0; i < fullComment.length; i += CHUNK_SIZE) {
+            chunks.push(fullComment.slice(i, i + CHUNK_SIZE));
+          }
+          if (chunks.length === 0) return [];
+
+          return chunks.map((chunk, i) => ({
             type: 'excellent_comment' as const,
             agentName,
-            comment,
-            text: `${agentName}에게 도착한 별점 5점과 기분 좋은 한마디: "${comment}"`,
+            comment: chunk,
+            // First chunk shows the agent name intro, subsequent chunks are continuation
+            text: i === 0
+              ? `${agentName}에게 도착한 별점 5점과 기분 좋은 한마디: "${chunk}"`
+              : `"${chunk}"`,
             priority: 1 as const,
-          };
+          }));
         });
 
       if (newMessages.length === 0) return;

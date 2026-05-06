@@ -22,6 +22,7 @@ const STATUS_LABEL: Record<string, string> = {
 };
 
 export default function AgentTable({ agents, title = '계정 상태' }: Props) {
+  const onlineAgents = agents.filter((a) => a.status !== 'Offline');
   return (
     <div style={{
       background: 'var(--color-surface)',
@@ -51,7 +52,7 @@ export default function AgentTable({ agents, title = '계정 상태' }: Props) {
           padding: '0.1vw 0.52vw',
           fontWeight: 700,
         }}>
-          {agents.length}명
+          {onlineAgents.length}명
         </span>
       </div>
       <div className="scroll-area" style={{ flex: 1 }}>
@@ -64,13 +65,13 @@ export default function AgentTable({ agents, title = '계정 상태' }: Props) {
             </tr>
           </thead>
           <tbody>
-            {agents.length === 0 ? (
+            {onlineAgents.length === 0 ? (
               <tr>
                 <td colSpan={3} style={{ textAlign: 'center', color: 'var(--color-text-muted)', padding: '1.25vw', fontSize: '0.83vw' }}>
                   데이터 없음
                 </td>
               </tr>
-            ) : agents.map((agent) => {
+            ) : onlineAgents.map((agent) => {
               const dotClass = `dot-${agent.status.toLowerCase()}`;
               const statusClass = `status-${agent.status.toLowerCase()}`;
               return (

@@ -43,29 +43,30 @@ export function BizReviewPage() {
   );
 }
 
-export function ExternalPage() { 
+
+
+export function DisputePage() {
   return (
-    <LookerOnlyPage 
-      teamName="대외민원팀" 
-      iframeSrc="https://datastudio.google.com/embed/reporting/a38ef374-136b-4dbd-9984-42a09f97143e/page/p_ubs3vbor2d" 
+    <LookerOnlyPage
+      teamName="대외민원/분쟁조정팀"
+      iframeSrc={[
+        "https://datastudio.google.com/embed/reporting/a38ef374-136b-4dbd-9984-42a09f97143e/page/p_ubs3vbor2d",
+        "https://datastudio.google.com/embed/reporting/a38ef374-136b-4dbd-9984-42a09f97143e/page/p_ewb190vw2d"
+      ]}
+      slideTitles={['대외민원팀', '분쟁조정팀']}
     />
-  ); 
+  );
 }
 
-export function DisputePage()   { 
-  return (
-    <LookerOnlyPage 
-      teamName="분쟁조정팀" 
-      iframeSrc="https://datastudio.google.com/embed/reporting/a38ef374-136b-4dbd-9984-42a09f97143e/page/p_ewb190vw2d"
-    />
-  ); 
+export function ExternalPage() {
+  return <DisputePage />;
 }
 
-export function SecondhandPage(){ 
+export function SecondhandPage(){
   return (
-    <LookerOnlyPage 
-      teamName="중고거래팀" 
+    <LookerOnlyPage
+      teamName="중고거래팀"
       iframeSrc="https://datastudio.google.com/embed/reporting/a38ef374-136b-4dbd-9984-42a09f97143e/page/p_vdbm0mdq2d"
     />
-  ); 
+  );
 }

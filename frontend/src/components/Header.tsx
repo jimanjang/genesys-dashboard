@@ -8,8 +8,7 @@ const TEAMS = [
   { id: 'biz-ops',    label: '사업 운영팀',      path: '/biz-ops' },
   { id: 'alba',       label: '당근알바팀',        path: '/alba' },
   { id: 'biz-review', label: '사업심사팀',        path: '/biz-review' },
-  { id: 'external',   label: '대외민원팀',        path: '/external' },
-  { id: 'dispute',    label: '분쟁조정팀',        path: '/dispute' },
+  { id: 'external',   label: '대외민원/분쟁조정팀',  path: '/external' },
   { id: 'secondhand', label: '중고거래팀',         path: '/secondhand' },
 ];
 
@@ -82,7 +81,7 @@ export default function Header({ connected }: { connected?: boolean }) {
             whiteSpace: 'nowrap',
           }}
         >
-          <span>{current?.label || '팀 선택'}</span>
+          <span>{current?.id === 'external' && subtitle ? subtitle : (current?.label || '팀 선택')}</span>
           <span style={{ marginLeft: 'auto', fontSize: '0.57vw', color: 'var(--color-text-muted)' }}>▼</span>
         </button>
         {open && (
@@ -125,7 +124,7 @@ export default function Header({ connected }: { connected?: boolean }) {
       </div>
 
       {/* Dynamic Slide Subtitle (Next to Dropbox) */}
-      {subtitle && (
+      {subtitle && current?.id !== 'external' && (
         <div style={{
           display: 'flex',
           alignItems: 'center',

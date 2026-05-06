@@ -47,7 +47,7 @@ export default function BizOpsDashboard() {
   const bizGroup = aggregateQueues(data?.queues || [], ['비즈프로필', '포장주문', 'QR'], '비즈');
 
   // Slide logic: 3 slides total (Native, Looker 1, Looker 2)
-  const slideTitles = ['실시간 현황', '비즈', '광고'];
+  const slideTitles = ['전화', '사업운영팀', '광고'];
 
   React.useEffect(() => {
     window.dispatchEvent(new CustomEvent('slide-update', { detail: slideTitles[currentIndex] }));

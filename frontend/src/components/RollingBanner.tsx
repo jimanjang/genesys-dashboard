@@ -76,15 +76,15 @@ export default function RollingBanner() {
 
         <div style={{
           fontSize: '2.0vw',
-          fontWeight: 400, /* Regular weight for main body */
+          fontWeight: 400,
           color: '#ffffff',
           lineHeight: 1.5,
           letterSpacing: '-0.01em',
+          wordBreak: 'keep-all',
           display: '-webkit-box',
           WebkitLineClamp: 2,
           WebkitBoxOrient: 'vertical',
           overflow: 'hidden',
-          textOverflow: 'ellipsis',
         }}>
           {(() => {
             if (isDefaultText) {
