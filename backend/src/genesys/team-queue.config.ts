@@ -29,59 +29,71 @@ export const TEAM_QUEUE_CONFIG = {
     teamId: 'biz-ops',
     teamName: '사업 운영팀',
     queues: {
-      // Ads Group (3)
+      // Ads Group (6) — 사용자 요청 기준 2026-05-12
       ads1: {
+        label: '광고 호전환',
+        queueName: '광고 호전환',
+        mediaTypes: ['voice'],
+      },
+      ads2: {
         label: '광고 노출/성과',
         queueName: '당근 비즈니스센터_광고 노출/성과',
         mediaTypes: ['voice'],
       },
-      ads2: {
+      ads3: {
+        label: '광고 세금계산서',
+        queueName: '당근 비즈니스센터_광고 세금계산서 문의',
+        mediaTypes: ['voice'],
+      },
+      ads4: {
+        label: '신규 광고 문의',
+        queueName: '당근 비즈니스센터_신규 광고 문의',
+        mediaTypes: ['voice'],
+      },
+      ads5: {
+        label: '신규 광고 성과',
+        queueName: '당근 비즈니스센터_신규 광고 성과 문의',
+        mediaTypes: ['voice'],
+      },
+      ads6: {
         label: '신규 광고 신청',
         queueName: '당근 비즈니스센터_신규 광고 신청',
         mediaTypes: ['voice'],
       },
-      ads3: {
-        label: '광고 호전환',
-        queueName: '당근 비즈니스센터_광고 호전환',
-        mediaTypes: ['voice'],
-      },
-      // Biz Group (7)
+      // Biz Group — 정정된 5개 큐 (2026-05-12)
       biz1: {
         label: '비즈프로필 오류',
         queueName: '당근 비즈니스센터_비즈프로필 오류 문의 및 그 외',
         mediaTypes: ['voice'],
       },
       biz2: {
-        label: '비즈프로필 이용',
-        queueName: '당근 비즈니스센터_비즈프로필 이용 관련 문의',
+        label: '비즈프로필 이용제재',
+        queueName: '당근 비즈니스센터_비즈프로필 이용제재 문의',
         mediaTypes: ['voice'],
       },
       biz3: {
-        label: '비즈프로필 제재',
-        queueName: '당근 비즈니스센터_비즈프로필 제재',
+        label: '포장주문 이용방법',
+        queueName: '당근 비즈니스센터_포장주문 이용방법 문의',
         mediaTypes: ['voice'],
       },
       biz4: {
-        label: '비즈프로필 이용제재',
-        queueName: '당근 비즈니스센터_비즈프로필 이용제재',
+        label: 'QR서비스',
+        queueName: '당근 QR서비스센터_상담사 연결',
         mediaTypes: ['voice'],
       },
       biz5: {
-        label: '포장주문',
-        queueName: '당근 비즈니스센터_포장주문',
-        mediaTypes: ['voice'],
-      },
-      biz6: {
-        label: 'QR서비스',
-        queueName: '당근 비즈니스센터_QR서비스',
-        mediaTypes: ['voice'],
-      },
-      biz7: {
         label: '비즈프로필 호전환',
-        queueName: '당근 비즈니스센터_비즈프로필 호전환',
+        queueName: '비즈프로필 호전환',
         mediaTypes: ['voice'],
       },
     },
+    // 광고(6명) + 비즈(9명) 상담원 통합 — AgentTable에 모두 표시
+    agentNames: [
+      // 광고팀
+      'Asha Jeon', 'Binny Byeon', 'Charlotte Oh', 'Kelly Cha', 'Nia Kang', 'Winnie Go',
+      // 비즈팀
+      'Amber Jeon', 'Guillaume Yang', 'Jane Lee', 'Milah Im', 'Rachel Hur', 'Ruki Kim', 'Sarah An', 'Sophia Kim', 'Tiver Kim',
+    ],
     agentTeams: ['광고', '사업', '비즈'],
   },
 

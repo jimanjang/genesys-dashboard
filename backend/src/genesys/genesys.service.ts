@@ -94,19 +94,27 @@ export class GenesysService {
       config,
     );
 
-    // Fetch agents by team label(s)
-    const agentTeams: string[] = config.agentTeam
-      ? [config.agentTeam]
-      : config.agentTeams || [];
-
-    // We fetch all users and filter by team name client-side for simplicity
+    // Fetch agents — agentNames 우선, 없으면 팀명으로 필터링
     let agents: AgentStatus[] = [];
     try {
       const allUsers = await this.api.apiRequest<any>(
         'GET',
         `/api/v2/users?pageSize=200&expand=presence,routingStatus,team`,
       );
+
+      const agentNames: string[] = config.agentNames || [];
+      const agentTeams: string[] = config.agentTeam
+        ? [config.agentTeam]
+        : config.agentTeams || [];
+
       const filtered = (allUsers?.entities || []).filter((u: any) => {
+        // 이름 기반 필터링 (agentNames가 정의된 경우 우선 적용)
+        if (agentNames.length > 0) {
+          return agentNames.some((n: string) =>
+            (u.name || '').toLowerCase().includes(n.toLowerCase()),
+          );
+        }
+        // 기존 팀명 기반 필터링
         const teamName = u.team?.name || '';
         return agentTeams.some((t: string) =>
           teamName.toLowerCase().includes(t.toLowerCase()),

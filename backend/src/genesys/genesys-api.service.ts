@@ -200,11 +200,27 @@ export class GenesysApiService {
       return (entry as any)?.mediaTypes || null;
     };
 
+    // ── longestWait 별도 수집: 모든 미디어 타입 포함 (Genesys 위젯과 동일)
+    const longestWaitMsMap = new Map<string, number>();
+    for (const result of obsData?.results || []) {
+      const queueId = result.group?.queueId || 'unknown';
+      // 미디어 타입 필터 없음 — 음성/콜백/채팅/이메일/메시지 모두 포함
+      for (const d of result.data || []) {
+        if (d.metric === 'oWaiting' && d.observations) {
+          for (const obs of d.observations) {
+            const wait = Date.now() - new Date(obs.observationDate).getTime();
+            const prev = longestWaitMsMap.get(queueId) || 0;
+            if (wait > prev) longestWaitMsMap.set(queueId, wait);
+          }
+        }
+      }
+    }
+
     for (const result of obsData?.results || []) {
       const queueId = result.group?.queueId || 'unknown';
       const mediaType = result.group?.mediaType;
       
-      // Filter by enabled mediaTypes if config is provided
+      // waiting/interacting/agents 카운트는 voice 필터 유지
       const allowedMedia = getQueueMediaConfig(queueId);
       if (allowedMedia && mediaType && !allowedMedia.includes(mediaType)) {
         continue;
@@ -219,20 +235,16 @@ export class GenesysApiService {
         });
       }
       const q = queueMap.get(queueId)!;
-      let longestWaitMs = 0;
 
       for (const d of result.data || []) {
         if (d.metric === 'oWaiting') q.waiting += d.stats?.count || 0;
         if (d.metric === 'oInteracting') q.interacting += d.stats?.count || 0;
         if (d.metric === 'oOnQueueUsers') q.agents += d.stats?.count || 0;
-        if (d.metric === 'oWaiting' && d.observations) {
-          for (const obs of d.observations) {
-            const wait = Date.now() - new Date(obs.observationDate).getTime();
-            if (wait > longestWaitMs) longestWaitMs = wait;
-          }
-        }
       }
-      q.longestWait = this.formatDuration(longestWaitMs);
+
+      // longestWait는 위에서 별도 수집한 값 사용
+      const lwMs = longestWaitMsMap.get(queueId) || 0;
+      q.longestWait = this.formatDuration(lwMs);
     }
 
     // Merge aggregates

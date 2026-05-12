@@ -4,12 +4,11 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 const TEAMS = [
-  { id: 'pay',         label: '페이팀',          path: '/pay' },
-  { id: 'biz-ops',    label: '사업 운영팀',      path: '/biz-ops' },
-  { id: 'alba',       label: '당근알바팀',        path: '/alba' },
-  { id: 'biz-review', label: '사업심사팀',        path: '/biz-review' },
-  { id: 'external',   label: '대외민원/분쟁조정팀',  path: '/external' },
-  { id: 'secondhand', label: '중고거래팀',         path: '/secondhand' },
+  { id: 'pay',         label: '페이팀',              path: '/pay' },
+  { id: 'biz-ops',    label: '사업팀',               path: '/biz-ops' },
+  { id: 'alba',       label: '당근알바팀',             path: '/alba' },
+  { id: 'external',   label: '대외민원/분쟁조정팀',    path: '/external' },
+  { id: 'secondhand', label: '중고거래팀',             path: '/secondhand' },
 ];
 
 export default function Header({ connected }: { connected?: boolean }) {
