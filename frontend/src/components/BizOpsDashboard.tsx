@@ -7,6 +7,12 @@ import AgentTable from '@/components/AgentTable';
 
 const DAANGN_ORANGE = '#FF8200';
 
+// 1시간마다 갱신될 key 생성 (전체화면 유지, 페이지 리로드 없음)
+function getHourlyKey() {
+  const now = new Date();
+  return `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}-${now.getHours()}`;
+}
+
 function fmt(n: number | undefined) {
   if (n === undefined || n === null) return '—';
   return n.toLocaleString();
@@ -41,6 +47,16 @@ function aggregateQueues(allQueues: QueueMetric[], namePatterns: string[], label
 export default function BizOpsDashboard() {
   const { data, connected } = useDashboard('biz-ops');
   const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [iframeKey, setIframeKey] = React.useState(getHourlyKey);
+
+  // 1분마다 체크하여 정각에 iframe만 조용히 갱신 (전체화면 영향 없음)
+  React.useEffect(() => {
+    const checkHourChange = setInterval(() => {
+      const newKey = getHourlyKey();
+      setIframeKey((prev) => prev !== newKey ? newKey : prev);
+    }, 60 * 1000);
+    return () => clearInterval(checkHourChange);
+  }, []);
 
   // Group definitions
   const adGroup = aggregateQueues(data?.queues || [], ['광고'], '광고');
@@ -121,6 +137,7 @@ export default function BizOpsDashboard() {
             overflow: 'hidden',
           }}>
             <iframe
+              key={`${iframeKey}-biz`}
               src="https://datastudio.google.com/embed/reporting/a38ef374-136b-4dbd-9984-42a09f97143e/page/p_qmanjlnr2d?displayMode=RESIZE_TO_FIT"
               scrolling="no"
               style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none', display: 'block' }}
@@ -156,6 +173,7 @@ export default function BizOpsDashboard() {
             overflow: 'hidden',
           }}>
             <iframe
+              key={`${iframeKey}-ad`}
               src="https://datastudio.google.com/embed/reporting/a38ef374-136b-4dbd-9984-42a09f97143e/page/p_doihjtht2d?displayMode=RESIZE_TO_FIT"
               scrolling="no"
               style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none', display: 'block' }}

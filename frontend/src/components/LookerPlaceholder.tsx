@@ -1,8 +1,24 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 
+// 1시간마다 갱신될 key 생성 (전체화면 유지, 페이지 리로드 없음)
+function getHourlyKey() {
+  const now = new Date();
+  return `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}-${now.getHours()}`;
+}
+
 export default function LookerPlaceholder({ teamName, iframeSrc, slideTitles }: { teamName: string; iframeSrc?: string | string[], slideTitles?: string[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [iframeKey, setIframeKey] = useState(getHourlyKey);
+
+  // 정각 시각에 맞춰 iframe만 조용히 갱신 (전체화면 영향 없음)
+  useEffect(() => {
+    const checkHourChange = setInterval(() => {
+      const newKey = getHourlyKey();
+      setIframeKey((prev) => prev !== newKey ? newKey : prev);
+    }, 60 * 1000); // 1분마다 체크하여 정각 감지
+    return () => clearInterval(checkHourChange);
+  }, []);
 
   const sources = Array.isArray(iframeSrc) ? iframeSrc : (iframeSrc ? [iframeSrc] : []);
 
@@ -57,7 +73,7 @@ export default function LookerPlaceholder({ teamName, iframeSrc, slideTitles }: 
           }}>
             {sources.map((src, idx) => (
             <iframe
-              key={src}
+              key={`${iframeKey}-${src}`}
               src={`${src}${src.includes('?') ? '&' : '?'}displayMode=RESIZE_TO_FIT`}
               scrolling="no"
               style={{
