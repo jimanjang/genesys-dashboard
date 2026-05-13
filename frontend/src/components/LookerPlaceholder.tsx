@@ -1,10 +1,11 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 
-// 1시간마다 갱신될 key 생성 (전체화면 유지, 페이지 리로드 없음)
+// 5분마다 갱신될 key 생성 (전체화면 유지, 페이지 리로드 없음)
 function getHourlyKey() {
   const now = new Date();
-  return `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}-${now.getHours()}`;
+  const min5 = Math.floor(now.getMinutes() / 5);
+  return `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}-${now.getHours()}-${min5}`;
 }
 
 export default function LookerPlaceholder({ teamName, iframeSrc, slideTitles }: { teamName: string; iframeSrc?: string | string[], slideTitles?: string[] }) {

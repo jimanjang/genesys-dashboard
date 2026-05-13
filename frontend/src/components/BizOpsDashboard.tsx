@@ -7,10 +7,11 @@ import AgentTable from '@/components/AgentTable';
 
 const DAANGN_ORANGE = '#FF8200';
 
-// 1시간마다 갱신될 key 생성 (전체화면 유지, 페이지 리로드 없음)
+// 5분마다 갱신될 key 생성 (전체화면 유지, 페이지 리로드 없음)
 function getHourlyKey() {
   const now = new Date();
-  return `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}-${now.getHours()}`;
+  const min5 = Math.floor(now.getMinutes() / 5);
+  return `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}-${now.getHours()}-${min5}`;
 }
 
 function fmt(n: number | undefined) {
