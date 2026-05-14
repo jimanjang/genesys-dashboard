@@ -59,9 +59,9 @@ export default function AgentTable({ agents, title = '계정 상태' }: Props) {
         <table className="data-table" style={{ width: '100%', tableLayout: 'fixed' }}>
           <thead>
             <tr>
-              <th style={{ fontSize: '0.7vw', width: '45%' }}>상담원</th>
-              <th style={{ fontSize: '0.7vw', width: '30%' }}>상태</th>
-              <th style={{ fontSize: '0.7vw', width: '25%' }}>유지 시간</th>
+              <th style={{ fontSize: '0.85vw', width: '45%', paddingBottom: '0.4vw' }}>상담원</th>
+              <th style={{ fontSize: '0.85vw', width: '30%', paddingBottom: '0.4vw' }}>상태</th>
+              <th style={{ fontSize: '0.85vw', width: '25%', paddingBottom: '0.4vw' }}>유지 시간</th>
             </tr>
           </thead>
           <tbody>
@@ -76,14 +76,14 @@ export default function AgentTable({ agents, title = '계정 상태' }: Props) {
               const statusClass = `status-${agent.status.toLowerCase()}`;
               return (
                 <tr key={agent.id} style={{ opacity: agent.status === 'Offline' ? 0.5 : 1 }}>
-                  <td style={{ fontWeight: 600, fontSize: 'clamp(14px, 0.8vw, 24px)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', padding: '0.2vw 0.15vw' }}>{agent.name}</td>
-                  <td style={{ whiteSpace: 'nowrap', padding: '0.2vw 0.15vw' }}>
-                    <span className="status-badge" style={{ gap: '0.2vw' }}>
-                      <span className={`status-dot ${dotClass}`} style={{ width: '0.4vw', height: '0.4vw', minWidth: 6, minHeight: 6 }} />
-                      <span className={statusClass} style={{ fontSize: 'clamp(12px, 0.7vw, 20px)', fontWeight: 500 }}>{STATUS_LABEL[agent.status] || agent.status}</span>
+                  <td style={{ fontWeight: 600, fontSize: 'clamp(16px, 1.0vw, 28px)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', padding: '0.4vw 0.25vw' }}>{agent.name}</td>
+                  <td style={{ whiteSpace: 'nowrap', padding: '0.4vw 0.25vw' }}>
+                    <span className="status-badge" style={{ gap: '0.3vw' }}>
+                      <span className={`status-dot ${dotClass}`} style={{ width: '0.5vw', height: '0.5vw', minWidth: 8, minHeight: 8 }} />
+                      <span className={statusClass} style={{ fontSize: 'clamp(14px, 0.9vw, 24px)', fontWeight: 500 }}>{STATUS_LABEL[agent.status] || agent.status}</span>
                     </span>
                   </td>
-                  <td style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--color-text-muted)', fontSize: 'clamp(12px, 0.7vw, 20px)', fontWeight: 500, whiteSpace: 'nowrap', padding: '0.2vw 0.15vw' }}>
+                  <td style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--color-text-muted)', fontSize: 'clamp(14px, 0.9vw, 24px)', fontWeight: 500, whiteSpace: 'nowrap', padding: '0.4vw 0.25vw' }}>
                     {agent.duration}
                   </td>
                 </tr>

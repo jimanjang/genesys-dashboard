@@ -83,7 +83,7 @@ export default function RealtimeDashboard({
         display: 'grid',
         // Responsive grid: [Total Rate] [Queues...] [Agent Table]
         // We use fractional units for the queues to fill the middle space
-        gridTemplateColumns: `17% repeat(${Math.min(queueCount, 3)}, minmax(0, 1fr)) 19%`,
+        gridTemplateColumns: `15% repeat(${Math.min(queueCount, 3)}, minmax(0, 1fr)) 21%`,
         gridTemplateRows: '1fr 1fr',
         gap: '1.25vw',
         overflow: 'hidden',

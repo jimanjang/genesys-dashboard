@@ -89,22 +89,23 @@ export function QueueStatsGroup({ label, metric }: { label: string; metric: Queu
       }}>
         {label}
       </div>
-      {/* Stats row */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+        gridTemplateColumns: '1fr 1fr',
+        gridTemplateRows: '1fr 1fr',
         padding: '0.83vw 1.04vw',
         gap: '0.83vw',
         flex: 1,
       }}>
+        <Stat label="인입호" value={fmt(daily.offered)} />
+        <Stat label="응대호" value={fmt(daily.answered)} />
+        <Stat label="포기호" value={fmt(daily.abandon)} color={daily.abandon > 0 ? 'var(--color-yellow)' : 'var(--color-text)'} bg={daily.abandon > 0 ? 'var(--color-yellow-light)' : undefined} />
         <Stat 
-          label="대기" 
-          value={fmt(daily.waiting)} 
+          label="대기호" 
+          value={fmt(waiting)} 
           color={waiting > 0 ? 'var(--color-red)' : 'var(--color-text)'} 
           bg={waiting > 0 ? 'var(--color-red-light)' : undefined} 
         />
-        <Stat label="인입" value={fmt(daily.offered)} />
-        <Stat label="포기" value={fmt(daily.abandon)} color={daily.abandon > 0 ? 'var(--color-yellow)' : 'var(--color-text)'} bg={daily.abandon > 0 ? 'var(--color-yellow-light)' : undefined} />
       </div>
     </div>
   );
@@ -172,7 +173,7 @@ export function LeadTimeCard({ metric, label }: { metric: QueueMetric | undefine
       label={label}
       value={metric ? fmtMs(metric.avgHandleTime) : '—'}
       sub="평균 처리 시간 (AHT)"
-      size="lg"
+      size="md"
       accent
     />
   );

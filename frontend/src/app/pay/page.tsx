@@ -13,7 +13,6 @@ export default function PayDashboard() {
         { label: '금융피해 신고센터', nameSearch: '당근페이 금융피해 신고센터' },
       ]}
       agentTitle="계정 상태 (페이)"
-      mainQueueIndexes={[0]} // Combined answer rate uses ONLY the general line (당근 페이 관련 문의)
       hideOfflineAgents={true}
     />
   );

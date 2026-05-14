@@ -342,7 +342,10 @@ export class GenesysApiService {
           Meal: 4, Break: 4, Meeting: 4, Training: 4, Busy: 4, Away: 4, Other: 4, 
           Offline: 99,
         };
-        return (order[a.status] ?? 50) - (order[b.status] ?? 50);
+        const statusDiff = (order[a.status] ?? 50) - (order[b.status] ?? 50);
+        if (statusDiff !== 0) return statusDiff;
+        // If status is the same, sort by duration ascending (shortest first)
+        return a.duration.localeCompare(b.duration);
       });
   }
 }
