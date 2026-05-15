@@ -1,4 +1,4 @@
-'use client';
+import React, { useEffect, useState } from 'react';
 import { AgentStatus } from '@/hooks/useDashboard';
 
 interface Props {
@@ -84,7 +84,7 @@ export default function AgentTable({ agents, title = '계정 상태' }: Props) {
                     </span>
                   </td>
                   <td style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--color-text-muted)', fontSize: 'clamp(14px, 0.9vw, 24px)', fontWeight: 500, whiteSpace: 'nowrap', padding: '0.4vw 0.25vw' }}>
-                    {agent.duration}
+                    <AgentDuration agent={agent} />
                   </td>
                 </tr>
               );
@@ -94,4 +94,32 @@ export default function AgentTable({ agents, title = '계정 상태' }: Props) {
       </div>
     </div>
   );
+}
+
+function AgentDuration({ agent }: { agent: AgentStatus }) {
+  const [display, setDisplay] = useState(agent.duration);
+
+  useEffect(() => {
+    if (!agent.statusChangedAt || agent.status === 'Offline') {
+      setDisplay(agent.duration);
+      return;
+    }
+
+    const startTime = new Date(agent.statusChangedAt).getTime();
+    
+    const update = () => {
+      const diff = Math.max(0, Date.now() - startTime);
+      const total = Math.floor(diff / 1000);
+      const h = String(Math.floor(total / 3600)).padStart(2, '0');
+      const m = String(Math.floor((total % 3600) / 60)).padStart(2, '0');
+      const s = String(total % 60).padStart(2, '0');
+      setDisplay(`${h}:${m}:${s}`);
+    };
+
+    update();
+    const timer = setInterval(update, 1000);
+    return () => clearInterval(timer);
+  }, [agent.statusChangedAt, agent.status, agent.duration]);
+
+  return <>{display}</>;
 }

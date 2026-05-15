@@ -23,6 +23,7 @@ export interface AgentStatus {
   status: 'Interacting' | 'Communicating' | 'Idle' | 'Available' | 'Offline' | 
           'Meal' | 'Break' | 'Meeting' | 'Training' | 'Busy' | 'Away' | 'Other';
   duration: string; // "HH:MM:SS"
+  statusChangedAt?: string; // ISO string
   team?: string;
 }
 

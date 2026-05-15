@@ -332,6 +332,7 @@ export class GenesysApiService {
           name: u.name,
           status,
           duration: this.formatDuration(durationMs),
+          statusChangedAt: durationDateStr,
           team: u.team?.name,
         } as AgentStatus;
       })

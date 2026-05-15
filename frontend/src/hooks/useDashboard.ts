@@ -25,6 +25,7 @@ export interface AgentStatus {
   name: string;
   status: 'Available' | 'Idle' | 'Interacting' | 'Communicating' | 'Other' | 'Offline';
   duration: string;
+  statusChangedAt?: string;
   team?: string;
 }
 
