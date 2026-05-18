@@ -43,6 +43,7 @@ export default function AlbaDashboard() {
   const queues = [
     { label: '알바 일반문의', nameSearch: '당근알바 고객센터 일반문의' },
     { label: '알바 유료상품', nameSearch: '당근알바 고객센터 유료 상품 문의' },
+    { label: '알바 호전환', nameSearch: '당근알바 호전환' },
   ];
 
   // Aggregate stats across all matched queues

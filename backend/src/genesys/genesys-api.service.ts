@@ -107,7 +107,7 @@ export class GenesysApiService {
         })),
       },
       groupBy: ['queueId', 'mediaType'],
-      metrics: ['oWaiting', 'oInteracting', 'oOnQueueUsers'],
+      metrics: ['oWaiting', 'oInteracting', 'oAlerting', 'oOnQueueUsers'],
       detailMetrics: ['oWaiting'],
     };
     return this.apiRequest('POST', '/api/v2/analytics/queues/observations/query', body);
@@ -237,7 +237,9 @@ export class GenesysApiService {
       const q = queueMap.get(queueId)!;
 
       for (const d of result.data || []) {
-        if (d.metric === 'oWaiting') q.waiting += d.stats?.count || 0;
+        if (d.metric === 'oWaiting' || d.metric === 'oAlerting' || d.metric === 'oInteracting') {
+          q.waiting += d.stats?.count || 0;
+        }
         if (d.metric === 'oInteracting') q.interacting += d.stats?.count || 0;
         if (d.metric === 'oOnQueueUsers') q.agents += d.stats?.count || 0;
       }

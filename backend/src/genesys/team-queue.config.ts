@@ -111,6 +111,11 @@ export const TEAM_QUEUE_CONFIG = {
         queueName: '당근알바 고객센터 유료 상품 문의',  // ✅ confirmed
         mediaTypes: ['voice'],
       },
+      albaTransfer: {
+        label: '당근알바 호전환',
+        queueName: '당근알바 호전환',
+        mediaTypes: ['voice'],
+      },
     },
     agentTeam: '알바',
   },
