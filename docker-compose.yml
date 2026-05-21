@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: daangnservicelaika/genesys-frontend:latest
+    ports:
+      - "3000:3000"
+    restart: always
+    depends_on:
+      - backend
+
+  backend:
+    image: daangnservicelaika/genesys-backend:latest
+    ports:
+      - "3001:3001"
+    restart: always
+    env_file:
+      - ./backend/.env
+
+  server:
+    image: daangnservicelaika/genesys-server:latest
+    ports:
+      - "3002:3002"
+    restart: always
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=30
+      - WATCHTOWER_CLEANUP=true
+    restart: always
